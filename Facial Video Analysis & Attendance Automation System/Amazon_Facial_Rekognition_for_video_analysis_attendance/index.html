@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Face Recognition App</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .container {
+      background: #ffffff10;
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 700px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 20px;
+      background: #ffffff20;
+      border-radius: 15px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background: #ff7eb3;
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Face Recognition System</h1>
+    <div class="nav-links">
+      <a href="/collection_page">📂 Manage Collections</a>
+      <a href="/register_page">🖼️ Register Faces</a>
+      <a href="/recognize_page">📤 Recognize (Upload)</a>
+      <a href="/recognize_live">🎥 Recognize (Live)</a>
+    </div>
+    <footer>
+      <p>Powered by Amazon Rekognition & Flask</p>
+    </footer>
+  </div>
+</body>
+</html>

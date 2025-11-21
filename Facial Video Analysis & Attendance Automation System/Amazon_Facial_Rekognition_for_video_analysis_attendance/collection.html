@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collections</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #232526, #414345);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 80px;
+      color: #fff;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      z-index: 1000;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+    nav a:hover {
+      color: #00c6ff;
+      transform: scale(1.05);
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      background: #ffffff15;
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 30px 40px;
+      width: 95%;
+      max-width: 700px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 2rem;
+      color: #f1f1f1;
+    }
+
+    p {
+      text-align: center;
+      font-size: 1rem;
+      color: #ddd;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    ul li {
+      background: #ffffff20;
+      margin: 10px 0;
+      padding: 12px 15px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1rem;
+      color: #fff;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    ul li:hover {
+      transform: scale(1.02);
+      background: #ffffff30;
+    }
+
+    ul li a {
+      text-decoration: none;
+      background: #ff4d6d;
+      color: #fff;
+      font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    ul li a:hover {
+      background: #e63950;
+      transform: scale(1.05);
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      width: 60%;
+      max-width: 350px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 12px 20px;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .note {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.95rem;
+      color: #f1f1f1;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="/recognize_live" aria-label="Recognize Live">📹 Recognize Live</a>
+    <a href="/register_page" aria-label="Register Faces">📝 Register</a>
+    <a href="/recognize_page" aria-label="Recognize from Image">🔍 Recognize</a>
+    <a href="/" aria-label="Home">🏠 Home</a>
+  </nav>
+
+  <div class="container">
+    <h2>📂 Face Collections</h2>
+    <p>Total Collections: {{ count }}</p>
+
+    <ul>
+      {% for c in lst %}
+        <li>
+          {{ c }}
+          <a href="/delete_page?name={{c}}">Delete</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <form method="POST" action="/create_page">
+      <input type="text" name="collection-name" placeholder="✨ New Collection Name" required>
+      <button type="submit">➕ Create</button>
+    </form>
+
+    <p class="note">{{ statement }}</p>
+  </div>
+</body>
+</html>

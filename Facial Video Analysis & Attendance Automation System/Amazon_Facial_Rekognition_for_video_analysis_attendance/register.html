@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Face Recognition Registration</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f2f5;
+    }
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .header-card {
+      background: linear-gradient(45deg, #007bff, #0056b3);
+      color: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+    .info-card {
+      background-color: #ffffff;
+      border-left: 5px solid #007bff;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+    .section-card {
+      background-color: #ffffff;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-label {
+      font-weight: 500;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+      transform: translateY(-2px);
+    }
+    .btn-warning {
+      background-color: #ffc107;
+      border-color: #ffc107;
+      color: #212529;
+    }
+    .btn-warning:hover {
+      background-color: #e0a800;
+      border-color: #d39e00;
+    }
+    .card-list-item {
+      background-color: #f8f9fa;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #343a40;
+    }
+    .img-preview {
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+    }
+    .hidden {
+      display: none;
+    }
+    .navbar .nav-link {
+      color: #fff !important;
+      font-weight: 500;
+    }
+    .navbar .nav-link.active {
+      color: #ffc107 !important; /* highlight active page */
+    }
+  </style>
+</head>
+<body onload="hideLoadingDiv()">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold text-white" href="{{ url_for('start_page') }}">Face Recognition</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('start_page') }}">🏠 Home</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('collection_page') }}">📂 Collections</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('recognize_page') }}">🔍 Recognition</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('recognize_live') }}">🎥 Live Recognition</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <h3 class="header-card text-center flex-grow-1 mb-4">Face Recognition using Amazon Rekognition</h3>
+
+    <div class="info-card">
+      <h4 class="mb-2">About Face Registration</h4>
+      <p class="text-muted mb-0">
+        To register a face, you must select a <strong>collection</strong>, enter the <strong>person’s name</strong> (without spaces),
+        and upload three images from different angles: <strong>Front</strong>, <strong>Left</strong>, and <strong>Right</strong>.
+      </p>
+    </div>
+
+    {% if statement %}
+      <div class="text-center mb-4" id="LOADING">
+        <button type="submit" class="btn btn-warning w-100 py-2">{{ statement }}</button>
+      </div>
+    {% endif %}
+
+    <div class="row g-4">
+      <div class="col-12 col-lg-8">
+        <div class="section-card">
+          <h5 class="mb-3">Register New Face</h5>
+          <form id="todo-form" action="/register_faces" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label for="collection-select" class="form-label">Select a Collection</label>
+              <select id="collection-select" name="collection" class="form-select" required>
+                {% for item in lst %}
+                  <option value="{{ item }}">{{ item }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="person-name" class="form-label">Person's Name</label>
+              <input id="person-name" name="person-name" placeholder="Enter Person's Name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="file_front" class="form-label">Upload Front Image</label>
+              <input type="file" name="file_front" class="form-control" autocomplete="off" required>
+            </div>
+            <div class="mb-3">
+              <label for="file_left" class="form-label">Upload Left Image</label>
+              <input type="file" name="file_left" class="form-control" autocomplete="off" required>
+            </div>
+            <div class="mb-4">
+              <label for="file_right" class="form-label">Upload Right Image</label>
+              <input type="file" name="file_right" class="form-control" autocomplete="off" required>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary w-100 py-2">Register Faces</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-4">
+        <div class="section-card">
+          <h5 class="mb-3">Registered Faces & Images</h5>
+          <div class="d-flex flex-column gap-3">
+            {% for item in reg_lst %}
+              <div class="card-list-item">{{ item }}</div>
+            {% endfor %}
+            {% if filename %}
+              {% for img in filename %}
+                <div class="text-center">
+                  <img src="{{ url_for('static', filename='uploads/' + img) }}"
+                       class="img-fluid img-thumbnail img-preview" alt="Registered Face">
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function hideLoadingDiv() {
+      setTimeout(function(){
+        let el = document.getElementById('LOADING');
+        if (el) {
+          el.classList.add('hidden');
+        }
+      }, 5000)
+    }
+  </script>
+</body>
+</html>
